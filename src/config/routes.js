@@ -25,7 +25,6 @@ const initRouteItems = (route, root = null, exact = true) => {
 export default [
   initRouteItems(user),
   ...contents.subnav.map(item => initRouteItems(item, contents)),
-  initRouteItems(contents),
   initRouteItems(orders),
   ...withdraw.subnav.map(item => initRouteItems(item, withdraw)),
   initRouteItems(report),

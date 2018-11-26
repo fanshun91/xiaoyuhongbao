@@ -1,14 +1,36 @@
 import React, { PureComponent } from 'react'
 import { NavLink } from 'react-router-dom'
 import { Row, Col, Menu, Avatar } from 'antd'
-import { DEFAULT_NAV_PATH as nav, INIT_PATH_KEY as pathKey } from 'config/nav'
+import { DEFAULT_NAV_PATH as nav, INIT_PATH_KEY as rootPath } from 'config/nav'
+import Util from 'util'
 import './index.less'
 
 const MenuItem = Menu.Item
+const util = new Util()
 
 class Header extends PureComponent {
   state = {
-    currentKey: pathKey
+    currentKey: rootPath
+  }
+  // 组件加载前处理导航与路由的匹配
+  componentWillMount() {
+    let urlPath = window.location.pathname
+    let i, basePaths = []
+    // 获取基础路由
+    for(i in nav) {
+      let n = nav[i]
+      if (n.subnav.length > 0) {
+        basePaths.push(n.subnav[0].path)
+      } else {
+        basePaths.push(n.path)
+      }
+    }
+    // 如果匹配相应路由
+    if (basePaths.indexOf(urlPath) > -1) {
+      this.setState(() => ({ currentKey: urlPath }))
+    } else {
+      this.setState(() => ({ currentKey: '' }))
+    }
   }
   // 渲染 Menu Item
   renderMenuItems() {
@@ -31,7 +53,7 @@ class Header extends PureComponent {
   }
   // 用户退出登录
   handleUserExit = () => {
-    console.log('user exit - -!')
+    util.logout()
   }
   // 渲染
   render() {

@@ -234,6 +234,8 @@ module.exports = {
       'components': path.resolve(__dirname, '../src/components'),
       // Support 'src/layout' of local project
       'layout': path.resolve(__dirname, '../src/layout'),
+      // Support 'src/util' of local project
+      'util': path.resolve(__dirname, '../src/util'),
     },
     plugins: [
       // Adds support for installing with Plug'n'Play, leading to faster installs and adding

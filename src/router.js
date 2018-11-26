@@ -1,5 +1,6 @@
 import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
+import { INIT_PATH_KEY as rootPath } from 'config/nav'
 // 页面
 import Admin from './admin'
 import User from 'pages/user'
@@ -17,9 +18,9 @@ import NoMatch from 'pages/nomatch'
 const Router = props => (
   <Admin>
     <Switch>
-      {true ? <Redirect exact from="/" to="/user" /> : <Redirect to="/login" />}
+      {true ? <Redirect exact from="/" to={rootPath} /> : <Redirect to="/login" />}
       <Route exact path="/user" component={User} />
-      <Route path="/user/:userid" component={Detail} />
+      <Route exact path="/user/:userid" component={Detail} />
       <Route exact path="/contents/hongbao" component={Hongbao} />
       <Route exact path="/contents/message" component={Message} />
       <Route exact path="/orders" component={Orders} />
