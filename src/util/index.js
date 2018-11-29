@@ -29,6 +29,27 @@ class Util {
   logout() {
     console.log('user logout!')
   }
+
+  // 分页配置
+  pagination(res, callback) {
+    return {
+      current: res.pageNumber,
+      pageSize: res.pageSize,
+      total: res.totalCount,
+      showSizeChanger: true,
+      showQuickJumper: true,
+      pageSizeOptions: ['10', '20', '30'],
+      showTotal: total => `共 ${total} 条数据`,
+      // 页码切换，参数 1. page: 新页码; 2. size: 每页条数
+      onChange: (page, size) => { 
+        callback(page, size)
+      },
+      // 显示条数切换，参数 1. current: 当前页; 2. size: 每页条数
+      onShowSizeChange: (current, size) => { 
+        callback(current, size)
+      }
+    }
+  }
 }
 
 export default Util

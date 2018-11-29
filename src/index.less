@@ -1,3 +1,6 @@
+//
+// ─── GLOBAL STYLE RESET ─────────────────────────────────────────────────────────
+//
 body {
   background-color: rgb(240, 242, 245);
 }
@@ -10,3 +13,44 @@ h1 {
   margin-top: 10px;
   border: 0;
 }
+// ────────────────────────────────────────────────────────────────────────────────
+
+//
+// ─── GLOBAL DATA LOADING ────────────────────────────────────────────────────────
+//
+.ajax-loading {
+  display: none;
+  .mask{
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 9998;
+    background: rgb(251, 251, 251);
+    opacity: 0.1;
+  }
+  .loading {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 9999;
+    height: 80px;
+    padding: 0 60px;
+    line-height: 80px;
+    transform: translate(-50%,-50%);
+    background-color: rgba(0, 0, 0, 0.75);
+    border-radius: 6px;
+    text-align: center;
+    font-size: 16px;
+    color:#fff;
+    img {
+      width: 32px;
+      vertical-align: middle;
+    }
+    span {
+      margin-left:12px;
+    }
+  }
+}
+// ────────────────────────────────────────────────────────────────────────────────

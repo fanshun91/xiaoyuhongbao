@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import zhCN from 'antd/lib/locale-provider/zh_CN'
 import { LocaleProvider } from 'antd'
 import App from './App'
+// import Test from './test'
 import './index.less'
 
 const root = document.getElementById('root')

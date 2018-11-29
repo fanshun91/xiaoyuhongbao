@@ -8,6 +8,13 @@ import './index.less'
 const MenuItem = Menu.Item
 const util = new Util()
 
+// 一二级路径分离，需要取到有二级路径的节点集合
+// 凭借得到的集合，修改Menu的selectedKeys
+const cPaths = []
+const wPaths = []
+nav.contents.subnav.forEach(i => { cPaths.push(i.path) })
+nav.withdraw.subnav.forEach(i => { wPaths.push(i.path) })
+
 class Header extends PureComponent {
   state = {
     currentKey: rootPath
@@ -20,16 +27,25 @@ class Header extends PureComponent {
     for(i in nav) {
       let n = nav[i]
       if (n.subnav.length > 0) {
-        basePaths.push(n.subnav[0].path)
+        n.subnav.forEach(item => { basePaths.push(item.path) })
       } else {
         basePaths.push(n.path)
       }
     }
+
     // 如果匹配相应路由
     if (basePaths.indexOf(urlPath) > -1) {
+      // 校正selectedKeys - 1
+      if (cPaths.indexOf(urlPath) > -1) {
+        urlPath = cPaths[0]
+      }
+      // 校正selectedKeys - 2
+      if (wPaths.indexOf(urlPath) > -1) {
+        urlPath = wPaths[0]
+      }
       this.setState(() => ({ currentKey: urlPath }))
     } else {
-      this.setState(() => ({ currentKey: '' }))
+      urlPath !== '/' && this.setState(() => ({ currentKey: '' }))
     }
   }
   // 渲染 Menu Item
