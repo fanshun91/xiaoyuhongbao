@@ -3,9 +3,9 @@ import { Card, Table } from 'antd'
 import FilterForm from 'components/BasicForm'
 import { FORM_CONFIG, DATE_FIELDS } from 'config/form'
 import { table } from 'config/table'
+import Util from 'util'
 import axios from 'util/axios'
 import aid from 'util/aid'
-import Util from 'util'
 
 const util = new Util()
 

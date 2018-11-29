@@ -1,5 +1,6 @@
 // import React from 'react'
 import { Modal } from 'antd'
+import { INIT_PATH_KEY as rootPath } from 'config/nav'
 
 const confirm = Modal.confirm
 
@@ -28,5 +29,8 @@ export default {
     let occupiedHeight = 520
     let height = winHeigth - occupiedHeight
     return height
+  },
+  isDetailPath(path) {
+    return (path !== rootPath && path.indexOf(rootPath) > -1)
   }
 }

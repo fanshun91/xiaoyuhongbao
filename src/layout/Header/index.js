@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom'
 import { Row, Col, Menu, Avatar } from 'antd'
 import { DEFAULT_NAV_PATH as nav, INIT_PATH_KEY as rootPath } from 'config/nav'
 import Util from 'util'
+import aid from 'util/aid'
 import './index.less'
 
 const MenuItem = Menu.Item
@@ -45,7 +46,9 @@ class Header extends PureComponent {
       }
       this.setState(() => ({ currentKey: urlPath }))
     } else {
-      urlPath !== '/' && this.setState(() => ({ currentKey: '' }))
+      if (urlPath !== '/' && !aid.isDetailPath(urlPath)) {
+        this.setState(() => ({ currentKey: '' }))
+      }
     }
   }
   // 渲染 Menu Item
