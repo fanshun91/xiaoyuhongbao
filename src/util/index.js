@@ -31,14 +31,14 @@ class Util {
   }
 
   // 分页配置
-  pagination(res, callback) {
+  pagination(data, callback) {
     return {
-      current: res.pageNumber,
-      pageSize: res.pageSize,
-      total: res.totalCount,
+      current: data.pageNumber,
+      pageSize: data.pageSize,
+      total: data.totalRow,
       showSizeChanger: true,
       showQuickJumper: true,
-      pageSizeOptions: ['10', '20', '30'],
+      pageSizeOptions: ['2', '3', '4'],
       showTotal: total => `共 ${total} 条数据`,
       // 页码切换，参数 1. page: 新页码; 2. size: 每页条数
       onChange: (page, size) => { 

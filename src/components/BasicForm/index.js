@@ -5,7 +5,7 @@ import  './index.less'
 
 const FormItem = Form.Item
 const Option = Select.Option
-const timeFormat = "YYYY-MM-DD HH:mm"
+const timeFormat = "YYYY-MM-DD hh:mm"
 
 class FilterForm extends PureComponent {
   state = {

@@ -2,6 +2,7 @@ import React, { Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, Divider } from 'antd'
 import aid from 'util/aid'
+import axios from 'util/axios'
 
 export const table = {
   // @用户管理
@@ -16,39 +17,41 @@ export const table = {
     },
     {
       title: 'userID',
-      dataIndex: 'userid',
-      key: 'userid',
+      dataIndex: 'userId',
+      key: 'userId',
       width: 100,
     },
     {
-      title: '微信openid',
-      dataIndex: 'openid',
+      title: '微信openId',
+      dataIndex: 'openId',
       key: 'openid',
       width: 120,
     },
     {
       title: '微信unionid',
-      dataIndex: 'unionid',
+      dataIndex: 'uuid',
       key: 'unionid',
       width: 120,
     },
     {
       title: '用户昵称',
-      dataIndex: 'nickname',
-      key: 'nickname',
+      dataIndex: 'userName',
+      key: 'username',
       width: 160,
     },
     {
       title: '注册时间',
-      dataIndex: 'register_time',
+      dataIndex: 'createTime',
       key: 'register_time',
       width: 180,
+      render: time => aid.getFormatedTime(time)
     },
     {
       title: '最后登录时间',
-      dataIndex: 'last_login_time',
+      dataIndex: 'loginTime',
       key: 'last_login_time',
       width: 180,
+      render: time => aid.getFormatedTime(time)
     },
     {
       title: '累计发送金额',
@@ -64,13 +67,13 @@ export const table = {
     },
     {
       title: '账户余额',
-      dataIndex: 'account_balance',
+      dataIndex: 'userMoney',
       key: 'account_balance',
       width: 100,
     },
     {
       title: '账户状态',
-      dataIndex: 'account_status',
+      dataIndex: 'isDisable',
       key: 'account_status',
       width: 100,
       render: status => aid.getUserableStatus(status),
@@ -82,14 +85,14 @@ export const table = {
       align: 'center',
       width: 180,
       render: (text, record) => {
-        let changedStatus = aid.toggleUserableStatus(record.account_status)
+        let changedStatus = aid.toggleUserableStatus(record.isDisable)
         return (
           <Fragment>
-            <Button onClick={() => { aid.handleStatusChange(changedStatus) }}>
+            <Button onClick={() => { aid.handleStatusChange(record.userId, changedStatus) }}>
               {changedStatus}
             </Button>
             <Divider type="vertical" />
-            <Link to={"/user/" + record.userid}>查看详情</Link>
+            <Link to={"/user/" + record.userId}>查看详情</Link>
             {/*
               <Button onClick={截取当前/user后面的path，发送请求进行验证，如果成功则跳转，否则RETURN}></Button>
             */}

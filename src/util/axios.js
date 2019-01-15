@@ -9,7 +9,7 @@ class Axios {
     let loading = document.getElementById('ajax-loading')
     let baseURL = options.isMock ?
       'https://www.easy-mock.com/mock/5bfd29a9adde2323a2684b18' :
-      'test-ms.xiaoyuhb.com'
+      '//test-ms.xiaoxiaohb.com'
     let config = {
       url: options.url,
       method: options.method,
@@ -20,10 +20,10 @@ class Axios {
     
     // get请求
     if (method === 'get') {
-      config.params = options.params
+      config.params = options.data
     }
     // post请求
-    if (method === 'post') {
+    if (method === 'post' || method === 'put') {
       config.data = options.data
     }
     // 显示 ‘加载中’ 提示，showLoading属性来控制它在数据加载时是否显示 
@@ -39,14 +39,11 @@ class Axios {
           }
           if (res.status === 200) {
             let data = res.data
-            // 这里具体看后台返回的数据
-            // if (data.code === 0) {}
-            // if (data.success) {
-            //   resolve(data)
-            // } else {
-            //   Modal.error({ title: '数据请求失败', content: `${data.msg}` })
-            // }
-            resolve(data)
+            if (data.code === 1) {
+              resolve(data)
+            } else {
+              Modal.error({ title: '数据加载失败', content: `${data.msg}` })
+            }
           } else {
             reject(res.data)
           }
@@ -61,16 +58,84 @@ class Axios {
     })
   }
 
-  static request(self, url, method, params, isMock) {
-    this.ajax({ url, method, params, isMock })
+  // 查询（表格数据）
+  static request(options, self) {
+    this.ajax(options)
       .then(res => {
-        console.log(res)
-        let result = res.result
-        result.forEach((i, index) => { i.key = index })
+        let data = res.data
+        let list = data.list
+        list.forEach((i, index) => {
+          i.key = index
+          i.id = index + 1
+        })
         self.setState(() => ({
-          dataSource: result,
-          pagination: util.pagination(res, console.log) // 调试时需要修改
+          dataSource: list,
+          pagination: util.pagination(data, (num, size) => {
+            let newData = {
+              pageNumber: num,
+              pageSize: size
+            }
+            // 更新User的state状态
+            self.state.params = newData
+            // 更新参数状态
+            options.data = newData
+            this.request(options, self)
+          })
         }))
+      })
+  }
+  
+  // 获取单个用户的详情信息
+  static getUserDetail(params, self) {
+    this.ajax({
+      url: '/user',
+      method: 'get',
+      data: params
+    })
+      .then(res => {
+        let info = res.data
+        self.setState(() => ({ info }))
+      })
+  }
+  
+  // 请求变更账户状态
+  static changeAccountAvailable(data, record, self) {
+    this.ajax({
+      url: '/user/disable',
+      method: 'post',
+      data
+    })
+      .then(res => {
+        if(res.code === 1) {
+          this.updateUserData({
+            userId: record.userId,
+            openId: record.openId,
+            userName: record.userName
+          }, self)
+        } 
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+
+  // 更新用户数据
+  static updateUserData(params, self) {
+    this.ajax({
+      url: '/user',
+      method: 'put',
+      data: params
+    })
+      .then(res => {
+        if (res.code === 1) {
+          const {params} = self.state
+          // 更新成功，重新获取数据
+          this.request({
+            url: '/user/query',
+            method: 'get',
+            data: params
+          }, self)
+        }
       })
   }
 }
